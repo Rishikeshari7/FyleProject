@@ -15,8 +15,15 @@ const allDataContainer=document.querySelector(".all-data-container");
 const userFound=document.querySelector(".user-not-found");
 const loaderScreen=document.querySelector(".loader-screen");
 
+const repoContainer=document.querySelector(".repo-container");
+// ---------------------------------------color Changing-------------------------------------
 const dark=document.querySelector("#dark");
 const light=document.querySelector("#light");
+const bodyEle=document.body;
+const formInput=document.querySelector(".form-input");
+const userDataContainer=document.querySelector(".user-data-container");
+const userDataValue=document.querySelectorAll(".user-data-value");
+const socialImg=document.querySelectorAll(".social-img");
 
 const searchForm=document.querySelector(".form-container");
 const searchInput=document.querySelector("[data-searchInput]");
@@ -24,6 +31,7 @@ searchForm.addEventListener("submit",(e)=>{
     e.preventDefault();
     let userName=searchInput.value;
     fetchUserData(userName);
+    fetchRepoData(userName);
 });
 async function fetchUserData(userName){
     allDataContainer.classList.remove("active");
@@ -33,7 +41,7 @@ async function fetchUserData(userName){
     try{
         const response = await fetch (`https://api.github.com/users/${userName}`);
         const data=await response.json();
-        console.log(data);
+        // console.log(data);
         
         if(!response.ok){
             console.log("User Doesnt't exist ");
@@ -44,6 +52,7 @@ async function fetchUserData(userName){
         else{
             allDataContainer.classList.add("active");
             renderUserData(data);
+            
         }
     }
     catch(err){
@@ -77,9 +86,63 @@ light.addEventListener("click",lightThemeHandler);
 function darkThemeHandler(){
     light.classList.add("active");
     dark.classList.add("inactive");
+    bodyEle.style.backgroundColor='#141D2F';
+    formInput.style.backgroundColor='#1E2A47';
+    formInput.style.color='#fff';
+    allDataContainer.style.backgroundColor='#1E2A47';
+    userDataContainer.style.backgroundColor='#141D2F';
+    bodyEle.style.color='#fff';
+
+    userDataValue.forEach(ele =>{
+        ele.style.color="#ffffff"
+    });
+    socialImg.forEach(ele => {
+        ele.classList.add("active");
+    });
 }
 
 function lightThemeHandler(){
     light.classList.remove("active");
     dark.classList.remove("inactive");
+    bodyEle.style.backgroundColor='#f6f8ff';
+    formInput.style.backgroundColor='#fefefe';
+    formInput.style.color='#4b6a9b';
+    allDataContainer.style.backgroundColor='#fefefe';
+    userDataContainer.style.backgroundColor='#f6f8ff';
+    bodyEle.style.color='#4b6a9b';
+
+    userDataValue.forEach(ele =>{
+        ele.style.color="#2b3442"
+    });
+    socialImg.forEach(ele => {
+        ele.classList.remove("active");
+    });
+}
+
+// ----------------------------------------repo--------------------------------------
+async function fetchRepoData(userName){
+    try{
+        const repoResponse = await fetch(`https://api.github.com/users/${userName}/repos`);
+        const repoData= await repoResponse.json();  //arry of repos hai
+        console.log(repoData);
+        for(const repo of repoData){
+            try{
+                const repoLangResponse = await fetch(`https://api.github.com/repos/${userName}/${repo.name}/languages`);
+                const repoLangData= await repoLangResponse.json();
+                console.log(repoLangData)
+                for(let key in repoLangData){
+                    console.log(key);
+                }
+                console.log("Repo",repo.name," Lang",repo.language)
+            }
+            catch(e){
+                console.log("error in repo lang fetching",e);
+            }
+        
+        }
+    }
+    catch(e){
+        console.log("error in repo data fetching",e);
+    }
+    
 }
