@@ -15,6 +15,9 @@ const allDataContainer=document.querySelector(".all-data-container");
 const userFound=document.querySelector(".user-not-found");
 const loaderScreen=document.querySelector(".loader-screen");
 
+const dark=document.querySelector("#dark");
+const light=document.querySelector("#light");
+
 const searchForm=document.querySelector(".form-container");
 const searchInput=document.querySelector("[data-searchInput]");
 searchForm.addEventListener("submit",(e)=>{
@@ -65,4 +68,18 @@ async function renderUserData(data){
     twitter.innerHTML=data.twitter_username||'Not Available';
     link.innerHTML=data.email||'Not Available';
     business.innerHTML=data.company||'Not Available';
+}
+
+// ----------------------------day&night------------------------------------
+dark.addEventListener("click",darkThemeHandler);
+light.addEventListener("click",lightThemeHandler);
+
+function darkThemeHandler(){
+    light.classList.add("active");
+    dark.classList.add("inactive");
+}
+
+function lightThemeHandler(){
+    light.classList.remove("active");
+    dark.classList.remove("inactive");
 }

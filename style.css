@@ -27,6 +27,18 @@
     margin-top: 2rem;
     padding-left: 20px;
 }
+#dark{
+    display: flex;
+}
+#dark.inactive{
+    display: none;
+}
+#light{
+    display: none;
+}
+#light.active{
+    display: flex;
+}
 
 /* --------------------------------styling---------------------- */
 *{
