@@ -130,8 +130,31 @@ async function fetchRepoData(userName){
                 const repoLangResponse = await fetch(`https://api.github.com/repos/${userName}/${repo.name}/languages`);
                 const repoLangData= await repoLangResponse.json();
                 console.log(repoLangData)
+                const repoDiv=document.createElement("div");  //repo div
+
+                const repoName=document.createElement("p");
+                repoName.classList.add("repo-name");
+                repoName.innerHTML=`~${repo.name}`;
+                repoDiv.appendChild(repoName);
+
+                repoDiv.classList.add("repoDiv");               //repo class name
+                repoContainer.appendChild(repoDiv);
+
+                const repoLangDiv=document.createElement("div");
+                repoLangDiv.classList.add("repo-lang-div")
+                repoDiv.appendChild(repoLangDiv);
+
+                let c=0;
                 for(let key in repoLangData){
+                    c++;
                     console.log(key);
+                    const repoLang=document.createElement("span");      //repo lang div
+                    repoLang.classList.add("repo-lang")
+                    repoLang.innerHTML=key;
+                    repoLangDiv.appendChild(repoLang)
+                    if(c===3){
+                        break;
+                    }
                 }
                 console.log("Repo",repo.name," Lang",repo.language)
             }

@@ -186,4 +186,39 @@ main{
     opacity:0.5;
     float: left;
 }
+/* ---------------------repo Styling ----------------------------------------------- */
+.repo-container{
+    row-gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5rem;
+    flex-wrap: wrap;
+
+}
+.repoDiv{
+    background-color:  #fefefe;
+    padding:0.5rem;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    box-shadow:  0px 16px 30px -10px rgba(70, 96, 187, 0.2);
+    gap: 0.5rem;
+}
+.repo-name{
+    color: #4b6a9b;
+    opacity: 0.8;
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.repo-lang{
+    padding: 5px;
+    background-color: #0077ffe4;
+    color: #fff;
+    border-radius: 5px;
+}
+.repo-lang-div{
+    display: flex;
+    gap: 0.5rem;
+}
 
