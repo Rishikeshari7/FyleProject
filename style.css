@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Space Mono", monospace;
+}
+body{
+   background-color: #f6f8ff;
+   color: #4b6a9b;
+   font-size: 0.8rem;
+}
+section{
+    display: flex; 
+   flex-direction: column;
+   justify-content: center;
+   align-items: center; 
+   margin-top: 5rem;
+}
+nav{
+    display: flex; 
+    justify-content: space-between; 
+    margin: 1rem auto;
+    margin-bottom: 0.875rem;
+    padding: 10px;
+    width: 550px;
+}
+nav h1{
+    font-size: 2rem;
+}
+.theme{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1rem;
+}
