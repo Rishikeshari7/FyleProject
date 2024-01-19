@@ -11,6 +11,10 @@ const twitter=document.querySelector("[data-twitter]");
 const link =document.querySelector("[data-link]");
 const business=document.querySelector("[data-business]");
 
+const allDataContainer=document.querySelector(".all-data-container");
+const userFound=document.querySelector(".user-not-found");
+const loaderScreen=document.querySelector(".loader-screen");
+
 const searchForm=document.querySelector(".form-container");
 const searchInput=document.querySelector("[data-searchInput]");
 searchForm.addEventListener("submit",(e)=>{
@@ -19,14 +23,31 @@ searchForm.addEventListener("submit",(e)=>{
     fetchUserData(userName);
 });
 async function fetchUserData(userName){
+    allDataContainer.classList.remove("active");
+    loaderScreen.classList.add("active");
+    userFound.classList.remove("active");
+    loaderScreen.classList.add("active");
     try{
         const response = await fetch (`https://api.github.com/users/${userName}`);
         const data=await response.json();
         console.log(data);
-        renderUserData(data);
+        
+        if(!response.ok){
+            console.log("User Doesnt't exist ");
+            allDataContainer.classList.remove("active");
+            userFound.classList.add("active");
+    
+        }
+        else{
+            allDataContainer.classList.add("active");
+            renderUserData(data);
+        }
     }
     catch(err){
         console.log("ERROR in FETCH data",err);
+    }
+    finally{
+        loaderScreen.classList.remove("active");
     }
     
 }

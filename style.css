@@ -1,3 +1,34 @@
+/* ----------------------toggling----------------------------- */
+.all-data-container{
+    display: none;
+}
+.all-data-container.active{
+    display: block;
+    border-radius: 20px;
+}
+.user-not-found{
+    display: none;
+    margin-top:5rem ;
+}
+.user-not-found.active{
+    display: block;
+}
+.loader-screen{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.loader-screen.active{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    padding-left: 20px;
+}
+
+/* --------------------------------styling---------------------- */
 *{
     margin: 0;
     padding: 0;
@@ -12,9 +43,8 @@ body{
 section{
     display: flex; 
    flex-direction: column;
-   justify-content: center;
    align-items: center; 
-   margin-top: 5rem;
+   margin-top: 1rem;
 }
 nav{
     display: flex; 
@@ -140,3 +170,4 @@ main{
     opacity:0.5;
     float: left;
 }
+
