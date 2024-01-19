@@ -14,6 +14,7 @@ const business=document.querySelector("[data-business]");
 const allDataContainer=document.querySelector(".all-data-container");
 const userFound=document.querySelector(".user-not-found");
 const loaderScreen=document.querySelector(".loader-screen");
+const spinner=document.querySelector(".spinner")
 
 const repoContainer=document.querySelector(".repo-container");
 // ---------------------------------------color Changing-------------------------------------
@@ -60,6 +61,7 @@ async function fetchUserData(userName){
     }
     finally{
         loaderScreen.classList.remove("active");
+        spinner.classList.add("active");
     }
     
 }
@@ -121,6 +123,8 @@ function lightThemeHandler(){
 
 // ----------------------------------------repo--------------------------------------
 async function fetchRepoData(userName){
+    
+    repoContainer.classList.remove("active");
     try{
         const repoResponse = await fetch(`https://api.github.com/users/${userName}/repos`);
         const repoData= await repoResponse.json();  //arry of repos hai
@@ -134,7 +138,7 @@ async function fetchRepoData(userName){
 
                 const repoName=document.createElement("p");
                 repoName.classList.add("repo-name");
-                repoName.innerHTML=`~${repo.name}`;
+                repoName.innerHTML=` ${repo.name}`;
                 repoDiv.appendChild(repoName);
 
                 repoDiv.classList.add("repoDiv");               //repo class name
@@ -166,6 +170,10 @@ async function fetchRepoData(userName){
     }
     catch(e){
         console.log("error in repo data fetching",e);
+    }
+    finally{
+        spinner.classList.remove("active");
+        repoContainer.classList.add("active");
     }
     
 }
