@@ -17,6 +17,8 @@ const loaderScreen=document.querySelector(".loader-screen");
 const spinner=document.querySelector(".spinner")
 
 const repoContainer=document.querySelector(".repo-container");
+let allRepoDiv=[];
+let repoNames=[];
 // ---------------------------------------color Changing-------------------------------------
 const dark=document.querySelector("#dark");
 const light=document.querySelector("#light");
@@ -35,6 +37,10 @@ searchForm.addEventListener("submit",(e)=>{
     fetchRepoData(userName);
 });
 async function fetchUserData(userName){
+    allRepoDiv.length=0;
+    repoNames.length=0; 
+
+    repoContainer.classList.remove("active");
     allDataContainer.classList.remove("active");
     loaderScreen.classList.add("active");
     userFound.classList.remove("active");
@@ -95,10 +101,18 @@ function darkThemeHandler(){
     userDataContainer.style.backgroundColor='#141D2F';
     bodyEle.style.color='#fff';
 
-    userDataValue.forEach(ele =>{
+    // repoDiv.style.backgroundColor=#1E2A47
+    allRepoDiv.forEach((ele)=>{
+        ele.style.backgroundColor='#1E2A47'
+    })
+    repoNames.forEach((ele)=>{
+        ele.style.color='#fff'
+    })
+
+    userDataValue.forEach((ele) =>{
         ele.style.color="#ffffff"
     });
-    socialImg.forEach(ele => {
+    socialImg.forEach((ele) => {
         ele.classList.add("active");
     });
 }
@@ -113,10 +127,17 @@ function lightThemeHandler(){
     userDataContainer.style.backgroundColor='#f6f8ff';
     bodyEle.style.color='#4b6a9b';
 
-    userDataValue.forEach(ele =>{
+    allRepoDiv.forEach((ele)=>{
+        ele.style.backgroundColor='#fefefe'
+    })
+    repoNames.forEach((ele)=>{
+        ele.style.color='#4b6a9b'
+    })
+
+    userDataValue.forEach((ele) =>{
         ele.style.color="#2b3442"
     });
-    socialImg.forEach(ele => {
+    socialImg.forEach((ele) => {
         ele.classList.remove("active");
     });
 }
@@ -128,21 +149,24 @@ async function fetchRepoData(userName){
     try{
         const repoResponse = await fetch(`https://api.github.com/users/${userName}/repos`);
         const repoData= await repoResponse.json();  //arry of repos hai
+        repoContainer.innerHTML = ''
         console.log(repoData);
         for(const repo of repoData){
             try{
                 const repoLangResponse = await fetch(`https://api.github.com/repos/${userName}/${repo.name}/languages`);
                 const repoLangData= await repoLangResponse.json();
-                console.log(repoLangData)
+                // console.log(repoLangData)
                 const repoDiv=document.createElement("div");  //repo div
 
                 const repoName=document.createElement("p");
                 repoName.classList.add("repo-name");
                 repoName.innerHTML=` ${repo.name}`;
                 repoDiv.appendChild(repoName);
+                repoNames.push(repoName);
 
                 repoDiv.classList.add("repoDiv");               //repo class name
                 repoContainer.appendChild(repoDiv);
+                allRepoDiv.push(repoDiv);
 
                 const repoLangDiv=document.createElement("div");
                 repoLangDiv.classList.add("repo-lang-div")
@@ -151,7 +175,7 @@ async function fetchRepoData(userName){
                 let c=0;
                 for(let key in repoLangData){
                     c++;
-                    console.log(key);
+                    // console.log(key);
                     const repoLang=document.createElement("span");      //repo lang div
                     repoLang.classList.add("repo-lang")
                     repoLang.innerHTML=key;
@@ -160,7 +184,7 @@ async function fetchRepoData(userName){
                         break;
                     }
                 }
-                console.log("Repo",repo.name," Lang",repo.language)
+                // console.log("Repo",repo.name," Lang",repo.language)
             }
             catch(e){
                 console.log("error in repo lang fetching",e);
@@ -174,6 +198,7 @@ async function fetchRepoData(userName){
     finally{
         spinner.classList.remove("active");
         repoContainer.classList.add("active");
+        console.log(allRepoDiv);
     }
     
 }

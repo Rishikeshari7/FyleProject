@@ -221,10 +221,11 @@ main{
     display: none;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 5rem;
-    margin: 3rem 4rem;
+    margin: 3rem;
 
 }
 .repoDiv{
+    max-width: 340px;
     overflow: hidden;
     background-color:  #fefefe;
     padding:0.5rem;
