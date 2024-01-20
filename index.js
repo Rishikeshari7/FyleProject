@@ -15,10 +15,16 @@ const allDataContainer=document.querySelector(".all-data-container");
 const userFound=document.querySelector(".user-not-found");
 const loaderScreen=document.querySelector(".loader-screen");
 const spinner=document.querySelector(".spinner")
-
+// -------------------------------repo & pagination-------------------------
 const repoContainer=document.querySelector(".repo-container");
 let allRepoDiv=[];
 let repoNames=[];
+const pagination=document.querySelector(".pagination")
+const paginationValue=document.querySelector("#pagination-value");
+const paginationSubmit=document.querySelector("#pagination-submit")
+document.querySelector('#prevButton').addEventListener('click', prevHandler);
+document.querySelector('#nextButton').addEventListener('click', nextHandler);
+const pages=document.querySelector(".pages")
 // ---------------------------------------color Changing-------------------------------------
 const dark=document.querySelector("#dark");
 const light=document.querySelector("#light");
@@ -36,10 +42,12 @@ searchForm.addEventListener("submit",(e)=>{
     fetchUserData(userName);
     fetchRepoData(userName);
 });
+// ------------------------------fetching user data------------------------------
 async function fetchUserData(userName){
     allRepoDiv.length=0;
     repoNames.length=0; 
 
+    pagination.classList.remove("active");
     repoContainer.classList.remove("active");
     allDataContainer.classList.remove("active");
     loaderScreen.classList.add("active");
@@ -101,6 +109,8 @@ function darkThemeHandler(){
     userDataContainer.style.backgroundColor='#141D2F';
     bodyEle.style.color='#fff';
 
+    paginationValue.style.backgroundColor="#1E2A47";
+    paginationValue.style.color="#fff";
     // repoDiv.style.backgroundColor=#1E2A47
     allRepoDiv.forEach((ele)=>{
         ele.style.backgroundColor='#1E2A47'
@@ -127,6 +137,8 @@ function lightThemeHandler(){
     userDataContainer.style.backgroundColor='#f6f8ff';
     bodyEle.style.color='#4b6a9b';
 
+    paginationValue.style.backgroundColor="#fefefe";
+    paginationValue.style.color="#4b6a9b";
     allRepoDiv.forEach((ele)=>{
         ele.style.backgroundColor='#fefefe'
     })
@@ -191,14 +203,80 @@ async function fetchRepoData(userName){
             }
         
         }
+        
+        showRepoDataPerPage(perPage,allRepoDiv);
     }
     catch(e){
         console.log("error in repo data fetching",e);
     }
     finally{
+        
         spinner.classList.remove("active");
         repoContainer.classList.add("active");
+        pagination.classList.add("active");
         console.log(allRepoDiv);
     }
     
 }
+
+// ------------------------------pagination-----------------------------------
+
+let page=1;
+let perPage=paginationValue.value||10;
+let total;
+function prevHandler(e){
+    e.preventDefault();
+    if(page>1){
+        page--;
+        console.log(page)
+        // perPage=paginationValue.value;
+        showRepoDataPerPage(perPage)
+    }
+    
+}
+function nextHandler(e){
+    e.preventDefault();
+    if(page<total){
+        page++;
+        console.log(page)
+        // perPage=paginationValue.value;
+        showRepoDataPerPage(perPage)
+    }
+    
+}
+paginationSubmit.addEventListener("click",()=>{
+    console.log(paginationValue.value," ",searchInput.value,page)
+    perPage=paginationValue.value;
+    page=1;
+    showRepoDataPerPage(perPage)
+    
+    
+})
+
+const showRepoDataPerPage=(perPage)=>{
+    if(allRepoDiv.length % perPage==0){
+        total =allRepoDiv.length/perPage;
+    }
+    else{
+        total =Math.ceil(allRepoDiv.length/perPage) ;
+    }
+    if(page<=total){
+        let start=(page-1)*perPage;
+        console.log(typeof start)
+        console.log(typeof perPage)
+        let end=start + parseInt(perPage);
+        repoContainer.innerHTML='';
+        const smallRepoDiv= allRepoDiv.slice(start,end);
+        console.log("start",start,"end",end,"  ")
+        smallRepoDiv.forEach((ele)=>{
+        repoContainer.appendChild(ele);
+    })
+    }
+    else{
+
+        // alert("You are at extreme")
+    }   
+    pages.innerHTML=`${page}out of ${total}`;
+}
+
+
