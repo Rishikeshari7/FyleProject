@@ -40,7 +40,7 @@ searchForm.addEventListener("submit",(e)=>{
     e.preventDefault();
     let userName=searchInput.value;
     fetchUserData(userName);
-    fetchRepoData(userName);
+    
 });
 // ------------------------------fetching user data------------------------------
 async function fetchUserData(userName){
@@ -62,12 +62,13 @@ async function fetchUserData(userName){
             console.log("User Doesnt't exist ");
             allDataContainer.classList.remove("active");
             userFound.classList.add("active");
+            
     
         }
         else{
             allDataContainer.classList.add("active");
             renderUserData(data);
-            
+            fetchRepoData(userName);
         }
     }
     catch(err){
@@ -75,7 +76,7 @@ async function fetchUserData(userName){
     }
     finally{
         loaderScreen.classList.remove("active");
-        spinner.classList.add("active");
+        // spinner.classList.add("active");
     }
     
 }
@@ -156,7 +157,7 @@ function lightThemeHandler(){
 
 // ----------------------------------------repo--------------------------------------
 async function fetchRepoData(userName){
-    
+    spinner.classList.add("active");
     repoContainer.classList.remove("active");
     try{
         const repoResponse = await fetch(`https://api.github.com/users/${userName}/repos`);
